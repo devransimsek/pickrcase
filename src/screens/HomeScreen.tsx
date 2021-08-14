@@ -1,26 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addNewNumber } from '../actions/numbers-actions';
-import { Card, Logs } from '../components';
+import { addNewNumber, setGenerateNumber } from '../actions/numbers-actions';
+import { Card, Logs, Button } from '../components';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    AsyncStorage.setItem('numbers', '[]');
-    dispatch(addNewNumber());
-    dispatch(addNewNumber());
-    dispatch(addNewNumber());
-  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <SafeAreaView style={{ backgroundColor: 'white' }}>
         <ScrollView>
           <View style={styles.container}>
-            <Card />
-            <Card />
-            <Card />
+            <Card cardIndex={'1'} />
+            <Card cardIndex={'2'} />
+            <Card cardIndex={'3'} />
+            <Button
+              title={'Generate'}
+              onPress={() => dispatch(setGenerateNumber())}
+            />
             <Logs />
           </View>
         </ScrollView>

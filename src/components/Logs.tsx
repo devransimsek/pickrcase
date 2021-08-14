@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  Modal,
   StyleSheet,
   Text,
-  View,
-  Modal,
-  FlatList,
-  Dimensions,
-  ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { Button } from '.';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Logs = () => {
   const [showLogsModal, setShowLogsModal] = useState(false);
@@ -21,6 +20,9 @@ const Logs = () => {
   const _getData = async () => {
     setShowLogsModal(true);
     setLoader(true);
+    AsyncStorage.getItem('numbers').then((result) => {
+      console.log(result);
+    });
     const _data: string = (await AsyncStorage.getItem('numbers')) || '[]';
     console.log(_data, 'data');
     setData(JSON.parse(_data));
@@ -53,15 +55,12 @@ const Logs = () => {
                 }}
                 style={{ flex: 1 }}
                 numColumns={3}
-                extraData={[]}
-                ListEmptyComponent={<Text></Text>}
-                // style={{ padding: 10 }}
                 renderItem={({ item }) => (
-                  <Text key={item} style={styles.cardItemTitle}>
-                    {Math.floor(item * 10)}
+                  <Text key={item.number} style={styles.cardItemTitle}>
+                    {Math.floor(item.number * 10)}
                   </Text>
                 )}
-                keyExtractor={(item) => `${item}`}
+                keyExtractor={(item: any) => `${item.number}`}
               />
             )}
           </View>
